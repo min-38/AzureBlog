@@ -1,6 +1,16 @@
 <template>
-    <div class="text-3xl font-bold underline">
-    How To Install Vue 3 in Laravel 9 with Vite - TechvBlogs
+    <div>
+        <Layout>
+            <router-view />
+        </Layout>
     </div>
-    
 </template>
+
+<script>
+import Layout from '@/Layouts/DefaultLayout.vue';
+
+export default {
+    name: 'App',
+    components: { Layout },
+}
+</script>

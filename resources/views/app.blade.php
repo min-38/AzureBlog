@@ -3,13 +3,16 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>How To Install Vue 3 in Laravel 9 with Vite</title>
+	<title>개발자 김민서 블로그</title>
 
 	@vite('resources/css/app.css')
+	@vite('resources/js/app.js')
 </head>
 <body>
-	<div id="app"></div>
-
-	@vite('resources/js/app.js')
+	<div class="md:container mx-auto px-4 h-screen">
+		<div id="app">
+			<router-view></router-view>
+		</div>
+	</div>
 </body>
 </html>
