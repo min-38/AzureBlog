@@ -11,7 +11,7 @@
 <body>
 	<div class="md:container mx-auto px-4 h-screen">
 		<div id="app">
-			<router-view></router-view>
+			<router-view />
 		</div>
 	</div>
 </body>
