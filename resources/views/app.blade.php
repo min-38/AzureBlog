@@ -9,7 +9,7 @@
 	@vite('resources/js/app.js')
 </head>
 <body>
-	<div class="md:container mx-auto px-4 h-screen">
+	<div class="mx-auto px-4 h-screen">
 		<div id="app">
 			<router-view />
 		</div>

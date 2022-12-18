@@ -1,7 +1,7 @@
 
 <template>
     <Header />
-    <div class="md:container mx-auto px-4 h-screen">
+    <div class="md:container mx-auto px-4 h-screen pt-[6rem]">
         <slot />
     </div>
     

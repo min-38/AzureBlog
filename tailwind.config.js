@@ -6,7 +6,11 @@ module.exports = {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'ef_diary': ['ef_diary', 'sans-serif']
+      },
+    },
   },
   plugins: [],
 }
