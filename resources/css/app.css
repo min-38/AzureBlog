@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    @font-face {
+        font-family: ef_diary;
+        font-weight: 400;
+        src: url(/public/ttf/ef_diary.ttf) format("woff");
+    }
+  }
