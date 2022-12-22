@@ -1,14 +1,14 @@
 import { ref } from 'vue'
 
-export default function useCategories() {
+export const useCategories = () => {
     const categories = ref({})
 
     const getCategories = async () => {
-        axios.get('/api/loadLang')
-        .then(response => {
-            categories.value = response.data.data;
+        axios.get('/api/loadCategory')
+        .then(res => {
+            categories.value = res.data.data;
         })
     }
 
-    return { categories, getCategories};
+    return { categories, getCategories };
 }

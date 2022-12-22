@@ -4,9 +4,12 @@
         <div>
             <form name="createForm" @submit.prevent="submit">
                 <div class="mb-6">
-                    <label for="language" class="block mb-2 text-sm font-medium text-gray-900">언어</label>
-                    <select v-model="language" id="language" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-32">
-                        <option v-for="option in options" :key="option.id" :value="option.language" :disabled="option.state == 'disabled'">{{option.language}}</option>
+                    <label for="categories" class="block mb-2 text-sm font-medium text-gray-900">언어</label>
+                    <select v-model="category" id="categories" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 w-32">
+                        <option v-for="category in categories" v-bind:key="category.id"
+                            :value="category.language" :disabled="category.state == 'disabled'">
+                            {{category.language}}
+                        </option>
                     </select>
                 </div>
                 <div class="mb-6">
@@ -17,7 +20,7 @@
                 <div class="mb-6">
                     <label for="content" class="block mb-2 text-sm font-medium text-gray-900">본문</label>
                     <div id="content">
-                        <QuillEditor v-model:content="content" :modules="modules" toolbar="full"/>
+                        <QuillEditor ref="quillEditor" contentType="html" v-model:content="someText" :modules="modules" toolbar="full"/>
                     </div>
                 </div>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="store">
@@ -30,51 +33,59 @@
 
 <script>
 import { onMounted, ref } from 'vue'
+import { QuillEditor } from "@vueup/vue-quill";
+// import * as mykey from '../assets/js/mykey.js'
+import { useCategories } from '@/Composables/categories.js';
 
 export default {
+    components: {
+        QuillEditor, 
+    },
     data() {
         return {
-            title: '',
-            name: '',
-        };
+            someText:''
+        }
+    },
+    computed: {
+        editor() {
+            return this.$refs.quillEditor;
+        },
     },
     methods: {
+        getSetText() {
+            this.someText = this.editor.getHTML();
+        },
+
         async store() {
             try {
-                const study = await axios.post(
+                const post = await axios.post(
                     "/api/study/store", 
                     {
                         title: this.title,
-                        content: this.content,
-                        language: this.language,
+                        content: this.someText,
+                        category: this.category,
                     }
                 );
-                console.log(study);
+
+                if(post.status == 200) {
+                    window.location.href = "/study/view/" + post.data;
+                }
+                
             } catch (e) {
                 console.log(e);
             }
         },
     },
     setup() {
-        // reactive state
-        const options = ref([]);
+        const { categories, getCategories } = useCategories();
+
         // mounted
         onMounted(() => {
-            // get api from laravel backend
-            axios.get('/api/loadLang')
-                .then((res) => {
-                    // assign state users with response data
-                    // options.value = ;
-                    options.value = res.data.data;
-                    console.log(res.data.data);
-                })
-                .catch((error) => {
-                    option.log(error.res.data);
-                });
-        });
+			getCategories();
+		});
 
         return {
-            options
+            categories
         };
     },
 }
