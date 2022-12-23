@@ -17,6 +17,7 @@ use App\Http\Controllers\StudyController;
 // Route::get('/loadClas', 'StudyController@loadLang');
 
 Route::controller(StudyController::class)->group(function () {
+    Route::get('/loadPosts', 'index');
     Route::get('/loadCategory', 'getCategory');
     Route::post('/study/store', 'store');
 });

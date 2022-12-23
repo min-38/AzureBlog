@@ -4,7 +4,6 @@ import axios from 'axios';
 import router from './router.js';
 import App from './App.vue'
 import Datepicker from '@vuepic/vue-datepicker';
-// import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import '@/../css/quill.css';
 

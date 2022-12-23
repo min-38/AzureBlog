@@ -8,6 +8,7 @@ use App\Models\Languages;
 use App\Models\Post;
 use App\Interfaces\StudyInterface;
 use App\Http\Resources\CategoryResource;
+use App\Http\Resources\StudyResource;
 use App\Http\Requests\StudyStoreRequest;
 
 class StudyController extends Controller
@@ -19,7 +20,22 @@ class StudyController extends Controller
         $this->study = $study;
     }
 
-    public function index() {
+    public function index(Request $req) {
+        $posts = $this->getStudies($req->page);
+        // $postCount = $this->study->getStudiesCount();
+        $data = StudyResource::collection($posts);
+        $linkdata = array(
+            'perPage' => $posts->perPage(),
+            'currentPage' => $posts->currentPage(),
+            'lastPage' => $posts->lastPage(),
+            'total' => $posts->total(),
+        );
+
+        return response()->json(array($data, $linkdata));
+    }
+
+    public function getStudies($page) {
+        return $this->study->getStudies($page);
     }
 
     // 언어 목록 가져오기

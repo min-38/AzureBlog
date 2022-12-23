@@ -14,7 +14,19 @@ use App\Models\Post;
 use App\Interfaces\StudyInterface;
 
 class StudyRepository implements StudyInterface {
-    
+    public function getStudies() {
+        return Post::join('users', 'writer', '=', 'users.id')
+                    ->join('categories', 'category', '=', 'categories.id')
+                    ->where('posts.deleted_at', null)
+                    ->latest('posts.created_at')
+                    ->select('posts.*', 'categories.language', 'users.user_name as userName')
+                    ->paginate(10);
+    }
+
+    public function getStudiesCount() {
+        return Post::where('deleted_at', null)->count();
+    }
+
     public function getCategories() {
         return Category::where('deleted_at', null)->get(['id','language']);
     }
