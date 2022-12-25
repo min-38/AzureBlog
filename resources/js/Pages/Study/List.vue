@@ -64,7 +64,7 @@
                     <tbody>
                         <tr v-for="post in posts" :key="post.id" class="bg-white border-b">
                             <td class="py-4 px-6">
-                                {{ linkdata.total}}
+                                {{ linkdata.total - 1 }}
                             </td>
                             <td class="py-4 px-6">
                                 <div class="flex items-center">
@@ -88,21 +88,55 @@
                 </table>
             </div>
         </div>
-        <pagination v-bind:linkdata="linkdata" />
+        <pagination v-bind:linkdata="linkdata" @ChangePage="passEvent"/>
     </div>
 </template>
 
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
-import { loadPosts } from '@/Composables/posts.js';
 import Pagination from '@/Includes/Pagination.vue';
 
 export default {
+    data() {
+        return {
+            posts: ref({}),
+            linkdata: ref({}),
+            page: 1,
+        }
+    },
     components: {
         Pagination,
+    },
+    methods:{
+        loadPosts(page = 1) {
+            axios.post('/api/loadPosts', {
+                page: this.page,
+            })
+            .then(res => {
+                this.posts = res.data[0];
+                this.linkdata = res.data[1];
+            });
+        },
+
+        passEvent(page) {
+            this.page = page;
+        }
+    },
+    mounted() {
+        this.loadPosts();
+    },
+    watch: {
+        page: {
+            handler: function(cur, prev) {
+                console.log(cur);
+                console.log(prev);
+                this.loadPosts(cur);
+                // this.foo(); // call it in the context of your component object
+            }
+        }
     },
     setup() {
         const date = ref();
@@ -116,14 +150,11 @@ export default {
             date.value = [startDate, endDate];
 
             getPosts();
-
             // console.log(posts);
         })
-        
+
         return {
             date,
-            posts,
-            linkdata
         }
     }
 }

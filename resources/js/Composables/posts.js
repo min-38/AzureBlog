@@ -4,7 +4,7 @@ export const loadPosts = () => {
     const posts = ref({})
     const linkdata = ref({})
 
-    const getPosts = async (page = 1) => {
+    const getPosts = async () => {
         axios.get('/api/loadPosts')
         .then(res => {
             posts.value = res.data[0];

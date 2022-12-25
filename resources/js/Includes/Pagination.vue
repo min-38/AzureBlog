@@ -7,7 +7,7 @@
                         <a class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all
                             duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none" @click="backPage">Previous</a>
                     </li>
-                    <li v-for="link in Math.ceil(linkdata.total / perPage)" :key="link" @click="() => goToPage(link)" class="page-item">
+                    <li v-for="link in Math.ceil(linkdata.total / perPage)" :key="link" @click="goToPage(link), passEvent(page)" class="page-item">
                         <a :style="{ color: activeColor}" class="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all
                             duration-300 rounded text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none">
                             <span v-if="page == link" style='color: red'>{{ link }}</span>
@@ -25,17 +25,26 @@
 </template>
 <script>
 
-import { defineComponent, ref } from 'vue'
+import { watch, defineEmits } from 'vue'
 import handlePagination from "@/Composables/pagination.js";
 
 export default {
     name: 'Pagination',
     props: {
-      linkdata: Object, // Required prop
+        linkdata: Object, // Required prop
     },
-    setup() {
+    methods:{
+        passEvent(page) {
+            this.$emit('ChangePage', page);
+        }
+    },
+    setup(props) {
         const handlePaginationValue = handlePagination();
+        watch(handlePaginationValue.page, (currentValue, oldValue) => {
+            props.page = currentValue;
+        });
         return { ...handlePaginationValue};
+        
     },
 }
 </script>

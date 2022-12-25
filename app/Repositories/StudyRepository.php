@@ -14,7 +14,7 @@ use App\Models\Post;
 use App\Interfaces\StudyInterface;
 
 class StudyRepository implements StudyInterface {
-    public function getStudies() {
+    public function getStudies($cur_page) {
         return Post::join('users', 'writer', '=', 'users.id')
                     ->join('categories', 'category', '=', 'categories.id')
                     ->where('posts.deleted_at', null)

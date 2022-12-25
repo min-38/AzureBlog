@@ -5,7 +5,7 @@ namespace App\Interfaces;
 interface StudyInterface {
     public function getCategories();
 
-    public function getStudies();
+    public function getStudies($cur_page);
 
     public function getStudiesCount();
 
